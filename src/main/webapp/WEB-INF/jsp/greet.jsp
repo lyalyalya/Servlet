@@ -1,12 +1,14 @@
+<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8"></head>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $('#getState').click(function (){
                 $.ajax({
                     type: "get",
-                    url: "main",
+                    url: "/simplewebapp/main?ajax=true",
                     success: function(msg){$('#output').text(msg);}
                 });
             });
@@ -27,8 +29,8 @@
             $('#deleteState').click(function (){
                 $.ajax({
                 type: "delete",
-                    url: "main",
-                    success: function(msg){$('#output').text(msg);}
+                url: "main",
+                success: function(msg){$('#output').text(msg);}
                 });
             });
          });
