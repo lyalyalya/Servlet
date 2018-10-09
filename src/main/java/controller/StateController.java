@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @WebServlet("/main")
 public class StateController extends HttpServlet {
     private AtomicInteger count = new AtomicInteger(0);
-    private static States state=States.GET;
+    private static States state = States.GET;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -22,7 +22,6 @@ public class StateController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        //boolean ajax = "XMLHttpRequest".equals(req.getHeader("X-Requested-With"));
         if (req.getParameter("ajax") != null) {
             state = States.GET;
             PrintWriter out = resp.getWriter();
@@ -31,7 +30,7 @@ public class StateController extends HttpServlet {
             out.close();
         } else {
             RequestDispatcher rd = req.getRequestDispatcher("WEB-INF\\jsp\\greet.jsp");
-            req.setAttribute("mes",state.toString());
+            req.setAttribute("mes", state.toString());
             rd.forward(req, resp);
         }
     }
@@ -61,20 +60,6 @@ public class StateController extends HttpServlet {
         out.print(" Count: " + getCookie(req, resp));
     }
 
-    /*private int getCookies(HttpServletRequest req){
-        HttpSession session=req.getSession();
-        Integer cookie=(Integer) session.getAttribute("Count");
-        int countViews;
-        if (cookie==null){
-            countViews=0;
-            session.setAttribute("Count",countViews);
-        }else {
-            countViews=cookie;
-            // int i=(Integer) req.getSession().getAttribute("Count");
-            session.setAttribute("Count",++countViews);
-        }
-        return cookie;
-    }*/
     private String getCookie(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Cookie[] cookies = req.getCookies();
         Cookie count = null;
