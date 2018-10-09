@@ -1,16 +1,19 @@
 package controller;
 
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@WebServlet("/main")
 public class StateController extends HttpServlet {
     private AtomicInteger count = new AtomicInteger(0);
-    private States state;
+    private static States state=States.GET;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -25,8 +28,10 @@ public class StateController extends HttpServlet {
             PrintWriter out = resp.getWriter();
             out.print(" Pressed button: " + state + " ");
             out.print("Count: " + getCookie(req, resp));
+            out.close();
         } else {
             RequestDispatcher rd = req.getRequestDispatcher("WEB-INF\\jsp\\greet.jsp");
+            req.setAttribute("mes",state.toString());
             rd.forward(req, resp);
         }
     }
