@@ -5,8 +5,17 @@ import io.restassured.response.ResponseBody;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+
 
 public class StateControllerTest {
+    @Test
+    public void getButtonTest() {
+        HashMap<String, String> stringStringHashMap = new HashMap<>();
+        stringStringHashMap.put("ajax", "true");
+        ResponseBody body = RestAssured.given().params(stringStringHashMap).get("http://localhost:8080/simplewebapp/main").getBody();
+        Assert.assertEquals("Test put fails", " Pressed button: GET ", body.asString());
+    }
 
     @Test
     public void putButtonTest() {

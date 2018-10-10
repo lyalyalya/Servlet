@@ -19,6 +19,7 @@ public class StateController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+
         if (req.getParameter("ajax") != null) {
             state = States.GET;
             resp.setContentType("text/html");
