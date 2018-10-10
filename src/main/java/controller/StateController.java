@@ -1,6 +1,5 @@
 package controller;
 
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -8,11 +7,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @WebServlet("/main")
 public class StateController extends HttpServlet {
-    private AtomicInteger count = new AtomicInteger(0);
     private static States state = States.GET;
 
     @Override
@@ -24,6 +21,7 @@ public class StateController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         if (req.getParameter("ajax") != null) {
             state = States.GET;
+            resp.setContentType("text/html");
             PrintWriter out = resp.getWriter();
             out.print(" Pressed button: " + state + " ");
             out.print("Count: " + getCookie(req, resp));
@@ -38,6 +36,7 @@ public class StateController extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         state = States.PUT;
+        resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         out.print(" Pressed button: " + state + " ");
         out.print("Count: " + getCookie(req, resp));
@@ -46,6 +45,7 @@ public class StateController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         state = States.POST;
+        resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
         out.print(" Pressed button: " + state + " ");
         out.print("Count: " + getCookie(req, resp));
