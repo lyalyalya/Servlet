@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 @WebServlet("/main")
 public class StateController extends HttpServlet {
@@ -22,14 +23,11 @@ public class StateController extends HttpServlet {
 
         if (req.getParameter("ajax") != null) {
             state = States.GET;
-            resp.setContentType("text/html");
-            PrintWriter out = resp.getWriter();
-            out.print(" Pressed button: " + state + " ");
-            out.print("Count: " + getCookie(req, resp));
-            out.close();
+            printResp(req,resp);
         } else {
             RequestDispatcher rd = req.getRequestDispatcher("WEB-INF\\jsp\\greet.jsp");
-            req.setAttribute("mes", state.toString());
+            req.setAttribute("states", Arrays.asList("get","put","post","delete"));
+            getCookieViews(req,resp);
             rd.forward(req, resp);
         }
     }
@@ -38,30 +36,24 @@ public class StateController extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         state = States.PUT;
         resp.setContentType("text/html");
-        PrintWriter out = resp.getWriter();
-        out.print(" Pressed button: " + state + " ");
-        out.print("Count: " + getCookie(req, resp));
+        printResp(req,resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         state = States.POST;
         resp.setContentType("text/html");
-        PrintWriter out = resp.getWriter();
-        out.print(" Pressed button: " + state + " ");
-        out.print("Count: " + getCookie(req, resp));
+        printResp(req,resp);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         state = States.DELETE;
         resp.setContentType("text/html");
-        PrintWriter out = resp.getWriter();
-        out.print("Pressed button: " + state + " ");
-        out.print(" Count: " + getCookie(req, resp));
+        printResp(req,resp);
     }
 
-    private String getCookie(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private String getCookieClicks(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Cookie[] cookies = req.getCookies();
         Cookie count = null;
         for (Cookie cookie : cookies) {
@@ -75,5 +67,41 @@ public class StateController extends HttpServlet {
         } else count = new Cookie("count", String.valueOf(1));
         resp.addCookie(count);
         return count.getValue();
+    }
+    private void getCookieViews(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Cookie[] cookies = req.getCookies();
+        Cookie count = null;
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("countViews")) {
+                count = cookie;
+                break;
+            }
+        }
+        if (count != null) {
+            count.setValue(String.valueOf(Integer.parseInt(count.getValue()) + 1));
+        } else count = new Cookie("countViews", String.valueOf(1));
+        resp.addCookie(count);
+        //return count.getValue();
+    }
+
+    private String getCountViews(HttpServletRequest req, HttpServletResponse resp){
+        Cookie[] cookies = req.getCookies();
+        Cookie count = null;
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("countViews")) {
+                count = cookie;
+                break;
+            }
+        }
+        return count.getValue();
+    }
+
+    private void printResp(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("text/html");
+        PrintWriter out = resp.getWriter();
+        out.print(" Pressed button: " + state + " ");
+        out.print(" Count of clicks: " + getCookieClicks(req, resp)+ " ");
+        out.print(" Count of views: " + getCountViews(req,resp));
+        out.close();
     }
 }

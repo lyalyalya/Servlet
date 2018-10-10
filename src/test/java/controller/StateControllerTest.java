@@ -3,7 +3,7 @@ package controller;
 import io.restassured.RestAssured;
 import io.restassured.response.ResponseBody;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.HashMap;
 
@@ -35,6 +35,6 @@ public class StateControllerTest {
     public void deleteButtonTest() {
         RestAssured.baseURI = "http://localhost:8080/simplewebapp/main";
         ResponseBody body = RestAssured.given().delete().getBody();
-        Assert.assertEquals("Test delete fails", "Pressed button: DELETE ", body.asString());
+        Assert.assertEquals("Test delete fails", " Pressed button: DELETE ", body.asString());
     }
 }
