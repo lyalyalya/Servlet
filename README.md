@@ -6,5 +6,5 @@ Build package and start Tomcat
 
 Open http://localhost:8080/simplewebapp/main in your browser
 
-Page shows the name of pressed buttons, count of clicks, count of views and listof available states.
+Page shows the name of pressed button, count of clicks, count of views and list of available states.
 
